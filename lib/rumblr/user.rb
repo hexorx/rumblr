@@ -11,6 +11,10 @@ module Rumblr
       self.tumblelogs.find { |log| log.primary? }
     end
     
+    def auth
+      {:email => self.email, :password => self.password}
+    end
+    
     class << self
       def login(attrs={})
         email, password = attrs[:email], attrs[:password]

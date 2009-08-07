@@ -5,9 +5,10 @@ module Rumblr
                 :type, :private_id
     attr_accessor :user
 
-    def posts
+    def posts(options={})
       return [] unless self.url
-      log, posts = Client.instance.read(:url => self.url)
+      options.reverse_merge!(:url => self.url)
+      log, posts = Client.instance.read(options)
       return posts
     end
 
