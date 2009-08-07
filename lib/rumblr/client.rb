@@ -54,7 +54,7 @@ module Rumblr
             hash
           end
           # merge hashes, clean out cruft
-          inner_attrs = cleanup_hash(subclass_attrs)
+          inner_attrs = cleanup_hash(subclass_attrs,post_attrs[:type])
           inner_attrs.delete(:text)
           inner_attrs.delete(:tag)
           post_attrs.merge!(inner_attrs)
@@ -128,9 +128,9 @@ module Rumblr
       user_attributes.merge!(:tumblelogs => tumblelogs)
     end
     
-    def cleanup_hash(attrs={})
+    def cleanup_hash(attrs={},type=nil)
       clean_attrs = attrs.inject({}) do |hash,(key,value)|
-        mapped_key = key.gsub(/-/,'_').to_sym
+        mapped_key = (key.split('-') - [type]).join('_').to_sym
         mapped_value =  case value
                         when /($1^|$yes^)/ then true
                         when /($0^|$no^)/ then false
